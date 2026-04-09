@@ -1,8 +1,13 @@
-﻿from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from pydantic import BaseModel
 from state import AgentState
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+# Sử dụng Groq thay vì OpenAI
+llm = ChatGroq(
+    model="llama3-70b-8192",   # Model nhanh và mạnh của Groq
+    temperature=0,
+    groq_api_key=None   # Sẽ tự lấy từ environment variable GROQ_API_KEY
+)
 
 class Route(BaseModel):
     next: str
@@ -10,13 +15,15 @@ class Route(BaseModel):
 
 def supervisor_node(state: AgentState):
     system = """You are the Supervisor. Route the task to the right agent.
-Available: researcher, critic, executor.
+Available agents: researcher, critic, executor.
 Finish with __end__ when you have a solid final answer.
 Only output valid JSON with 'next' and 'reasoning'."""
+
     response = llm.with_structured_output(Route).invoke([
         ("system", system),
         ("user", f"Current task: {state.task}\nReflection count: {state.reflection_count}")
     ])
+
     return {
         "next": response.next,
         "messages": [("assistant", f"Supervisor routing to {response.next}: {response.reasoning}")]
