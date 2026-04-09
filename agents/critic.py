@@ -1,7 +1,10 @@
-﻿from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from state import AgentState
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatGroq(
+    model="llama3-70b-8192",
+    temperature=0
+)
 
 def critic_node(state: AgentState):
     result = llm.invoke([
@@ -9,6 +12,7 @@ def critic_node(state: AgentState):
 If everything looks solid, reply with 'GOOD' and suggest moving to executor."""),
         ("user", "\n".join([m.content for m in state.messages[-4:]]))
     ])
+
     state.reflection_count += 1
     return {
         "messages": result,
