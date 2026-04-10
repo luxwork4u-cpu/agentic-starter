@@ -15,8 +15,8 @@ class Route(BaseModel):
 
 def supervisor_node(state: AgentState):
     system = """You are the Supervisor. Decide which agent should handle the task next.
-Available: researcher, critic, executor.
-Use '__end__' when the task is complete.
+Available agents: researcher, critic, executor.
+Use '__end__' when the task is complete and ready for final answer.
 Return only valid JSON with 'next' and 'reasoning'."""
 
     response = llm.with_structured_output(Route).invoke([
