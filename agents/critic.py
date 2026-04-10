@@ -1,8 +1,8 @@
-from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 from state import AgentState
 
-llm = ChatGroq(
-    model="llama3-70b-8192",
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash",
     temperature=0
 )
 
