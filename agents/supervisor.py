@@ -1,12 +1,13 @@
 
-from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel
 from state import AgentState
 
-# Sử dụng Groq với model mới
-llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
-    temperature=0
+# Sử dụng Google Gemini
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash",   # Model miễn phí, nhanh và khá mạnh
+    temperature=0,
+    google_api_key=None   # Sẽ tự lấy từ GEMINI_API_KEY
 )
 
 class Route(BaseModel):
