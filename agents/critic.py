@@ -10,9 +10,9 @@ llm = ChatGoogleGenerativeAI(
 
 def critic_node(state: AgentState):
     result = llm.invoke([
-        ("system", """You are the Critic. Review the current work carefully.
-Point out gaps, hallucinations, or missing information.
-If everything looks solid and complete, reply with 'GOOD' and suggest moving to executor."""),
+        ("system", """You are the Critic. Carefully review the current work.
+Point out any gaps, hallucinations, contradictions, or missing information.
+If the work is solid and complete, reply with the word 'GOOD' only and suggest moving to the executor."""),
         ("user", "\n".join([m.content for m in state.messages[-4:]]))
     ])
 
