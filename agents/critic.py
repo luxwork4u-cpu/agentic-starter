@@ -3,7 +3,8 @@ from state import AgentState
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
-    temperature=0
+    temperature=0,
+    google_api_key=None
 )
 
 def critic_node(state: AgentState):
