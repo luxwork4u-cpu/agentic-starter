@@ -10,7 +10,9 @@ llm = ChatGoogleGenerativeAI(
 
 def executor_node(state: AgentState):
     result = llm.invoke([
-        ("system", "You are the Executor. Synthesize all previous information into a clear, concise, and final answer."),
+        ("system", """You are the Executor. 
+Your job is to synthesize all the information from previous agents into one clear, concise, and final answer.
+Do not add new information. Just summarize and conclude based on what has been discussed."""),
         ("user", "\n".join([m.content for m in state.messages]))
     ])
 
