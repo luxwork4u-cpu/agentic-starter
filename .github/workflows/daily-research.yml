@@ -2,8 +2,8 @@ name: Daily Research Agent
 
 on:
   schedule:
-    - cron: '0 13 * * *'     # Chạy lúc 8:00 PM Việt Nam
-  workflow_dispatch:         # Cho phép chạy thủ công
+    - cron: '0 13 * * *'     
+  workflow_dispatch:         
 
 jobs:
   run-agent:
