@@ -1,13 +1,12 @@
+
 from langchain_groq import ChatGroq
 from pydantic import BaseModel
 from state import AgentState
 
-# Sử dụng Groq - tự lấy key từ GitHub Secrets
+# Sử dụng Groq với model mới
 llm = ChatGroq(
     model="llama-3.3-70b-versatile",
     temperature=0
-)
-    # Không cần ghi groq_api_key=None nữa, langchain_groq sẽ tự lấy từ GROQ_API_KEY
 )
 
 class Route(BaseModel):
