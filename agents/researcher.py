@@ -4,7 +4,7 @@ from state import AgentState
 import os
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
+    model="hướng dẫn bạn sửa nhanh các file còn lại (researcher, critic, executor)",
     temperature=0,
     google_api_key=os.getenv("GEMINI_API_KEY")
 )
