@@ -4,8 +4,9 @@ from state import AgentState
 
 # Sử dụng Groq - tự lấy key từ GitHub Secrets
 llm = ChatGroq(
-    model="llama3-70b-8192",
+    model="llama-3.3-70b-versatile",
     temperature=0
+)
     # Không cần ghi groq_api_key=None nữa, langchain_groq sẽ tự lấy từ GROQ_API_KEY
 )
 
