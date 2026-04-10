@@ -1,13 +1,12 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-import os
 from pydantic import BaseModel
 from state import AgentState
+import os
 
-# Sử dụng Google Gemini - lấy key từ GitHub Secrets
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0,
-    google_api_key=os.getenv("GEMINI_API_KEY")   # Dòng này quan trọng
+    google_api_key=os.getenv("GEMINI_API_KEY")
 )
 
 class Route(BaseModel):
