@@ -5,7 +5,7 @@ from state import AgentState
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0,
-    google_api_key=None   # Sẽ tự lấy từ GEMINI_API_KEY
+    google_api_key="AIzaSyCc5AQX2zpXMk-zhVErMbeL2KdhCjVmrcE"   # ← THAY BẰNG KEY THẬT CỦA BẠN
 )
 
 def researcher_node(state: AgentState):
