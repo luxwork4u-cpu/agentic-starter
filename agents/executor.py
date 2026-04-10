@@ -3,21 +3,29 @@ from state import AgentState
 import os
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-flash-latest",
-    temperature=0,
+    model="gemini-2.5-flash",
+    temperature=0.1,
     google_api_key=os.getenv("GEMINI_API_KEY")
 )
 
 def executor_node(state: AgentState):
-    result = llm.invoke([
-        ("system", """You are the Executor. 
-Your job is to synthesize all the information from previous agents into one clear, concise, and final answer.
-Do not add new information. Just summarize and conclude based on what has been discussed."""),
-        ("user", "\n".join([m.content for m in state.messages]))
-    ])
+    messages = "\n".join([m[1] if isinstance(m, tuple) else str(m) for m in state.messages])
+
+    prompt = f"""You are the Executor / Final Synthesizer.
+Task: {state.task}
+
+All previous research and critique:
+{messages}
+
+Produce a clean, professional, well-structured final report.
+Include key findings, sources if available, and clear conclusion."""
+
+    result = llm.invoke([("system", prompt), ("user", "Generate final answer now")])
+
+    final_answer = result.content if hasattr(result, 'content') else str(result)
 
     return {
-        "messages": result,
-        "final_answer": result.content,
+        "final_answer": final_answer,
+        "messages": [("assistant", f"Final Answer: {final_answer}")],
         "next": "__end__"
     }
