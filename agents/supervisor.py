@@ -2,11 +2,11 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel
 from state import AgentState
 
-# Test trực tiếp với key
+# Test với key trực tiếp
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0,
-    google_api_key="AIzaSyCc5AQX2zpXMk-zhVErMbeL2KdhCjVmrcE"   # ← Thay bằng key thật của bạn
+    google_api_key="AIzaSyCc5AQX2zpXMk-zhVErMbeL2KdhCjVmrcE"   # ← DÁN KEY THẬT CỦA BẠN VÀO ĐÂY
 )
 
 class Route(BaseModel):
