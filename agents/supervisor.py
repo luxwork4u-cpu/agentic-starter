@@ -1,11 +1,12 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel
 from state import AgentState
+import os
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     temperature=0,
-    google_api_key="AIzaSyCc5AQX2zpXMk-zhVErMbeL2KdhCjVmrcE"   # ← THAY BẰNG KEY THẬT CỦA BẠN Ở ĐÂY
+    google_api_key=os.getenv("GEMINI_API_KEY")
 )
 
 class Route(BaseModel):
@@ -13,10 +14,10 @@ class Route(BaseModel):
     reasoning: str
 
 def supervisor_node(state: AgentState):
-    system = """You are the Supervisor. Route the task to the right agent.
-Available agents: researcher, critic, executor.
-Finish with __end__ when you have a solid final answer.
-Only output valid JSON with 'next' and 'reasoning'."""
+    system = """You are the Supervisor. Decide which agent should handle the task next.
+Available: researcher, critic, executor.
+Use '__end__' when the task is complete.
+Return only valid JSON with 'next' and 'reasoning'."""
 
     response = llm.with_structured_output(Route).invoke([
         ("system", system),
@@ -25,5 +26,5 @@ Only output valid JSON with 'next' and 'reasoning'."""
 
     return {
         "next": response.next,
-        "messages": [("assistant", f"Supervisor routing to {response.next}: {response.reasoning}")]
+        "messages": [("assistant", f"Supervisor: {response.reasoning}")]
     }
