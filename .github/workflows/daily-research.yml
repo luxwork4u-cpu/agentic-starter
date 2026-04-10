@@ -1,48 +1,29 @@
 name: Daily Research Agent
-# ────── Dòng quan trọng #1 ──────
-# Tên của workflow này (bạn có thể đổi thành tên gì cũng được)
 
 on:
   schedule:
-    - cron: '0 13 * * *'     
-    # ────── Dòng quan trọng #2 ──────
-    # Lịch chạy tự động: 
-    # '0 13 * * *' nghĩa là chạy lúc 13:00 UTC = 20:00 (8 giờ tối) Việt Nam mỗi ngày
-
-  workflow_dispatch:
-    # ────── Dòng quan trọng #3 ──────
-    # Cho phép bạn bấm "Run workflow" thủ công để test (rất quan trọng khi học)
+    - cron: '0 13 * * *'     # Chạy lúc 8:00 PM Việt Nam
+  workflow_dispatch:         # Cho phép chạy thủ công
 
 jobs:
   run-agent:
-    # ────── Dòng quan trọng #4 ──────
     runs-on: ubuntu-latest
-    # Nghĩa là chạy trên máy chủ Linux của GitHub
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # ────── Dòng quan trọng #5 ──────
-        # Tải code từ GitHub về máy chủ để chạy
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-        # ────── Dòng quan trọng #6 ──────
-        # Cài đặt Python phiên bản 3.12
 
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-        # ────── Dòng quan trọng #7 ──────
-        # Cài tất cả thư viện trong file requirements.txt (LangGraph, OpenAI...)
 
       - name: Run Agentic Workflow
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python main.py
-        # ────── Dòng quan trọng #8 ──────
-        # Chạy file main.py (đây là nơi agent của chúng ta chạy)
-        # OPENAI_API_KEY được lấy từ Secrets (bí mật) của GitHub
