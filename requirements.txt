@@ -1,23 +1,7 @@
-﻿# agentic-starter
-Production-ready LangGraph + multi-agent workflow template (April 2026)
-
-**Features:**
-- Supervisor + Researcher + Critic + Executor
-- Reflection / critique loop
-- Persistent memory
-
-## Quick Start
-1. pip install -r requirements.txt
-2. Copy .env.example → .env and add your OpenAI key
-3. Run: python main.py
-"@ | Out-File -Encoding utf8 README.md
-
-@"
-langgraph>=1.1.0
-langchain>=0.3.0
-langchain-community>=0.3.0
-langchain-openai>=0.2.0
-pydantic>=2.0
-python-dotenv>=1.0.0
-langsmith>=0.1.0
+﻿langchain
+langgraph
+langchain-google-genai>=2.0.0
+pydantic
+tenacity
+google-genai
 duckduckgo-search>=7.0.0

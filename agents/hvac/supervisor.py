@@ -14,25 +14,24 @@ class Route(BaseModel):
     reasoning: str
 
 def supervisor_node(state: AgentState):
-    system = """Bạn là Supervisor của HVAC Troubleshooting Team.
-Nhiệm vụ: Phân tích triệu chứng HVAC và route đến agent phù hợp.
+    # Lấy task an toàn từ dict hoặc object
+    task = state.get("task") if isinstance(state, dict) else getattr(state, "task", "")
 
-Available agents:
-- diagnostician: Thu thập và phân tích nguyên nhân kỹ thuật
-- safety_critic: Kiểm tra an toàn và rủi ro
-- executor: Tổng hợp chẩn đoán cuối cùng + thứ tự sửa chữa
+    system = """Bạn là Supervisor của HVAC Troubleshooting Team.
+
+Available routes: diagnostician, safety_critic, executor, __end__
 
 Quy tắc:
-- Nếu triệu chứng có dấu hiệu nguy hiểm (mùi gas, khói, điện giật) → ưu tiên safety_critic trước
-- Nếu cần phân tích sâu triệu chứng → diagnostician
+- Nếu triệu chứng có dấu hiệu nguy hiểm (mùi gas, khói, điện) → safety_critic trước
+- Nếu cần phân tích nguyên nhân → diagnostician
 - Khi đã có đủ thông tin an toàn và chẩn đoán → executor
-- Nếu đã có kết quả cuối cùng → next = "__end__"
+- Khi xong → __end__
 
-Hãy suy nghĩ logic và trả về route rõ ràng."""
+Hãy suy nghĩ ngắn gọn và trả về route phù hợp."""
 
     response = llm.with_structured_output(Route).invoke([
         ("system", system),
-        ("user", f"Triệu chứng: {state.task}\nCurrent messages: {str(state.messages[-3:]) if state.messages else 'Start'}")
+        ("user", f"Triệu chứng: {task}\nCurrent messages: {str(state.get('messages', [])[-3:]) if isinstance(state, dict) else 'Start'}")
     ])
 
     return {

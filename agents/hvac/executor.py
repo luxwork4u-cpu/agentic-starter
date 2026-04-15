@@ -9,16 +9,17 @@ llm = ChatGoogleGenerativeAI(
 )
 
 def executor_node(state: AgentState):
-    messages = "\n".join([m[1] if isinstance(m, tuple) else str(m) for m in state.messages])
+    task = state.get("task") if isinstance(state, dict) else getattr(state, "task", "")
+    messages = "\n".join([m[1] if isinstance(m, tuple) else str(m) for m in state.get("messages", [])])
 
     prompt = f"""Bạn là Final Executor - HVAC Master Technician.
-Tổng hợp tất cả thông tin chẩn đoán và an toàn cho triệu chứng: {state.task}
+Tổng hợp chẩn đoán cho triệu chứng: {task}
 
-Cung cấp báo cáo cuối cùng theo cấu trúc rõ ràng:
+Cung cấp báo cáo cuối cùng theo cấu trúc:
 1. Tóm tắt vấn đề
 2. Nguyên nhân chính xác nhất
-3. Thứ tự kiểm tra & sửa chữa (bước 1, bước 2, bước 3...)
-4. Tool và vật liệu cần chuẩn bị
+3. Thứ tự kiểm tra & sửa chữa (bước 1, 2, 3...)
+4. Tool cần chuẩn bị
 5. Cảnh báo an toàn quan trọng
 6. Khi nào nên gọi chuyên gia
 
